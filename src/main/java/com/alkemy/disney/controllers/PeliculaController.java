@@ -33,7 +33,7 @@ public class PeliculaController {
         return peliculaService.mostrarPeliculas();
     }
 
-    @PostMapping("/create")
+    @PostMapping("/create") //EN VEZ DE REPETIR DOS VECES EL CODIGO PARA CREAR Y MODIFICAR UNA PELI. HACER METODOS PARA GUARDAR IMAGENES Y FECHAS.
     public Pelicula crearPelicula(@RequestParam MultipartFile imagen,
             @RequestParam String titulo,
             @RequestParam String fechaString,
@@ -70,4 +70,68 @@ public class PeliculaController {
 
         return peliculaService.guardarPelicula(pelicula);
     }
+
+    @DeleteMapping(path = "/{id}")
+    public String eliminarPelicula(@PathVariable("id") String id) {
+        boolean ok = this.peliculaService.eliminarPelicula(id);
+
+        if (ok) {
+            return "Se eliminó la película ";
+        } else {
+            return "No se pudo eliminar la película con ese Id";
+        }
+    }
+
+    @PutMapping(path = "{id}") // BUSCAR COMO DOCUMENTAR UNA API CON POSTMAN.   
+    public Pelicula modificarPelicula(@PathVariable("id") String id,
+            @RequestParam MultipartFile imagen,
+            @RequestParam String titulo,
+            @RequestParam String fechaString,
+            @RequestParam Integer calificacion,
+            @RequestParam String idGenero) {
+
+        Pelicula pelicula = (Pelicula) peliculaService.buscarPeliculaPorId(id).get();
+        pelicula.setTitulo(titulo);
+        pelicula.setCalificacion(calificacion);
+        pelicula.setGenero((Genero) generoService.buscarPorId(idGenero).get());
+
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date fecha = formato.parse(fechaString);
+            pelicula.setFechaCreacion(fecha);
+
+        } catch (ParseException ex) {
+            ex.getMessage();
+        }
+
+        if (!imagen.isEmpty()) {
+            Path directorioImagenes = Paths.get("src//main//resources//static/images"); //RUTA RELATIVA HACIA EL FOLDER IMAGES DE RECURSOS ESTATICOS
+            String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
+
+            try {
+                byte[] bytesImg = imagen.getBytes();
+                Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + imagen.getOriginalFilename());
+                Files.write(rutaCompleta, bytesImg);
+
+                pelicula.setImagen(imagen.getOriginalFilename());
+            } catch (IOException ex) {
+            }
+        }
+        return peliculaService.guardarPelicula(pelicula);
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
