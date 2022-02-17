@@ -3,6 +3,7 @@ package com.alkemy.disney.services;
 import com.alkemy.disney.entities.Personaje;
 import com.alkemy.disney.repositories.PersonajeRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,10 @@ public class PersonajeService {
     
     public Personaje guardarPersonaje(Personaje personaje){
         return personajeRepository.save(personaje);
+    }
+    
+    public Optional listarPersonajePorId(String id){
+        return personajeRepository.findById(id);
     }
     
     
