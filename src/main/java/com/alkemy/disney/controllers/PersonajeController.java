@@ -40,6 +40,21 @@ public class PersonajeController {
         return personajeService.listarPersonajes();
     }
 
+    @GetMapping("/name")
+    public ArrayList<Personaje> obtenerPorNombre(@RequestParam("nombre") String nombre) {
+        return personajeService.buscarPorNombre(nombre);
+    }
+
+    @GetMapping("/age")
+    public ArrayList<Personaje> obtenerPorEdad(@RequestParam("edad") Integer edad) {
+        return personajeService.buscarPorEdad(edad);
+    }
+
+    @GetMapping("/movie") //ARREGLAR ESTE MÉTODO. HACER UNA QUERY ENTERA EN VEZ DE UTILIZAR UN METODO EN EL REPO
+    public ArrayList<Personaje> obtenerPorPeli(@RequestParam("pelicula") String id) {
+        return personajeService.buscarPorPeli(id);
+    }
+
     @PostMapping("/create")
     public Personaje crearPersonaje(@RequestParam MultipartFile imagen,
             @RequestParam String nombre,
@@ -115,16 +130,6 @@ public class PersonajeController {
 
         return personajeService.guardarPersonaje(personaje);
     }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 
 }
