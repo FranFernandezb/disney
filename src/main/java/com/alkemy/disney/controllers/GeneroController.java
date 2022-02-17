@@ -55,4 +55,43 @@ public class GeneroController {
             return "No se pudo eliminar al género con ese Id";
         }
     }
+    
+    @PutMapping(path = "/{id}")
+    public Genero modificarGenero (@PathVariable("id")String id, @RequestParam String nombre, @RequestParam MultipartFile imagen){
+        
+        Genero genero = (Genero) generoService.buscarPorId(id).get();
+        
+        genero.setNombre(nombre);
+        
+        Path directorioImagenes = Paths.get("src//main//resources//static/images"); //RUTA RELATIVA HACIA EL FOLDER IMAGES DE RECURSOS ESTATICOS
+            String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
+
+            try {
+                byte[] bytesImg = imagen.getBytes();
+                Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + imagen.getOriginalFilename());
+                Files.write(rutaCompleta, bytesImg);
+
+                genero.setImagen(imagen.getOriginalFilename());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        
+        return generoService.guardarGenero(genero);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
