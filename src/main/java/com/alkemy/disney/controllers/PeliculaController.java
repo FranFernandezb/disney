@@ -2,6 +2,7 @@ package com.alkemy.disney.controllers;
 
 import com.alkemy.disney.entities.Genero;
 import com.alkemy.disney.entities.Pelicula;
+import com.alkemy.disney.excepciones.ErrorServicio;
 import com.alkemy.disney.services.GeneroService;
 import com.alkemy.disney.services.PeliculaService;
 import java.io.IOException;
@@ -10,10 +11,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,9 +28,37 @@ public class PeliculaController {
     @Autowired
     private GeneroService generoService;
 
-    @GetMapping()
-    public List<Pelicula> listarPeliculas() {
+    @GetMapping("/detalle")
+    public List<Pelicula> listarDetalles() {
         return peliculaService.mostrarPeliculas();
+    }
+
+    @GetMapping()
+    public ArrayList<String> listarPeliculas() {
+        List<Pelicula> lista = peliculaService.mostrarPeliculas();
+        ArrayList<String> peliculas = new ArrayList();
+
+        lista.forEach((l) -> {
+            SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+            String date = formato.format(l.getFechaCreacion());
+            peliculas.add("{ Imagen: " + l.getImagen() + ", Título: " + l.getTitulo() + ", Fecha de Creación: " + date + " }");
+        });
+        return peliculas;
+    }
+
+    @GetMapping("/name")
+    public ArrayList<Pelicula> obtenerPorTitulo(@RequestParam("titulo") String titulo) {
+        return peliculaService.buscarPorTitulo(titulo);
+    }
+
+    @GetMapping("/genre")
+    public ArrayList<Pelicula> obtenerPorGenero(@RequestParam("id") String id) {
+        return peliculaService.buscarPorGenero(id);
+    }
+
+    @GetMapping("/order")
+    public ArrayList<Pelicula> ordenar(@RequestParam String orden) throws ErrorServicio {
+        return peliculaService.ordenar(orden);
     }
 
     @PostMapping("/create") //EN VEZ DE REPETIR DOS VECES EL CODIGO PARA CREAR Y MODIFICAR UNA PELI. HACER METODOS PARA GUARDAR IMAGENES Y FECHAS.
@@ -120,18 +148,5 @@ public class PeliculaController {
         return peliculaService.guardarPelicula(pelicula);
 
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 }

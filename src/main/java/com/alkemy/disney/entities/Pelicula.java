@@ -84,12 +84,19 @@ public class Pelicula implements Serializable{
     public void setGenero(Genero genero) {
         this.genero = genero;
     }
-            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+    
+    public String cambiarFecha(Date fecha){
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        
+        String date = formato.format(fecha);
+        return date;
+    }
+           
 
 
     @Override
     public String toString() {
-        return "Pelicula{" + "id=" + id + ", imagen=" + imagen + ", titulo=" + titulo + ", fechaCreacion= " + formato.format(fechaCreacion) + ", calificacion=" + calificacion + ", genero=" + genero + '}';
+        return "Pelicula{" + "id=" + id + ", imagen=" + imagen + ", titulo=" + titulo + ", fechaCreacion= " + cambiarFecha(fechaCreacion) + ", calificacion=" + calificacion + ", genero=" + genero + '}';
     }
     
     
