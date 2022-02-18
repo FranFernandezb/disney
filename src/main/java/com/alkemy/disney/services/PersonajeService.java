@@ -44,7 +44,7 @@ public class PersonajeService {
     }
     
     public ArrayList<Personaje> buscarPorPeli(String id){
-        return personajeRepository.findByPelicula(id);
+        return personajeRepository.buscarPorPeli(id);
     }
     
     

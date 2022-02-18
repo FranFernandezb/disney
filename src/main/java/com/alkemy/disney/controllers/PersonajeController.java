@@ -50,8 +50,8 @@ public class PersonajeController {
         return personajeService.buscarPorEdad(edad);
     }
 
-    @GetMapping("/movie") //ARREGLAR ESTE MÉTODO. HACER UNA QUERY ENTERA EN VEZ DE UTILIZAR UN METODO EN EL REPO
-    public ArrayList<Personaje> obtenerPorPeli(@RequestParam("pelicula") String id) {
+    @GetMapping("/movies") //ARREGLAR ESTE MÉTODO. HACER UNA QUERY ENTERA EN VEZ DE UTILIZAR UN METODO EN EL REPO
+    public ArrayList<Personaje> obtenerPorPeli(@RequestParam("id") String id) {
         return personajeService.buscarPorPeli(id);
     }
 
