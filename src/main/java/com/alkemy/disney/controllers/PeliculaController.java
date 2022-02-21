@@ -2,9 +2,11 @@ package com.alkemy.disney.controllers;
 
 import com.alkemy.disney.entities.Genero;
 import com.alkemy.disney.entities.Pelicula;
+import com.alkemy.disney.entities.Personaje;
 import com.alkemy.disney.excepciones.ErrorServicio;
 import com.alkemy.disney.services.GeneroService;
 import com.alkemy.disney.services.PeliculaService;
+import com.alkemy.disney.services.PersonajeService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,6 +14,7 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,9 @@ public class PeliculaController {
 
     @Autowired
     private GeneroService generoService;
+    
+    @Autowired
+    private PersonajeService personajeService;
 
     @GetMapping("/detalle")
     public List<Pelicula> listarDetalles() {
@@ -66,12 +72,20 @@ public class PeliculaController {
             @RequestParam String titulo,
             @RequestParam String fechaString,
             @RequestParam Integer calificacion,
-            @RequestParam String idGenero) {
+            @RequestParam String idGenero, 
+            @RequestParam String idPersonaje) {
 
         Pelicula pelicula = new Pelicula();
         pelicula.setTitulo(titulo);
         pelicula.setCalificacion(calificacion);
         pelicula.setGenero((Genero) generoService.buscarPorId(idGenero).get());
+        
+        Personaje personaje = (Personaje) personajeService.listarPersonajePorId(idPersonaje).get();
+        
+        List<Personaje> lista = pelicula.getPersonajes();
+        lista.add(personaje);
+        pelicula.setPersonajes(lista);
+        
 
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         try {
@@ -116,7 +130,8 @@ public class PeliculaController {
             @RequestParam String titulo,
             @RequestParam String fechaString,
             @RequestParam Integer calificacion,
-            @RequestParam String idGenero) {
+            @RequestParam String idGenero,
+            @RequestParam String idPersonaje) {
 
         Pelicula pelicula = (Pelicula) peliculaService.buscarPeliculaPorId(id).get();
         pelicula.setTitulo(titulo);
@@ -145,8 +160,17 @@ public class PeliculaController {
             } catch (IOException ex) {
             }
         }
+        
+        Personaje personaje = (Personaje) personajeService.listarPersonajePorId(idPersonaje).get();
+        
+        List<Personaje> lista = pelicula.getPersonajes();
+        lista.add(personaje);
+        pelicula.setPersonajes(lista);
         return peliculaService.guardarPelicula(pelicula);
 
     }
+    
+    
+    
 
 }

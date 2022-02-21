@@ -2,7 +2,9 @@ package com.alkemy.disney.entities;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -24,18 +26,24 @@ public class Pelicula implements Serializable{
     
     @ManyToOne
     private Genero genero;
+    
+    @OneToMany
+    private List<Personaje> personajes;
 
     public Pelicula() {
     }
 
-    public Pelicula(String id, String imagen, String titulo, Date fechaCreacion, Integer calificacion, Genero genero) {
+    public Pelicula(String id, String imagen, String titulo, Date fechaCreacion, Integer calificacion, Genero genero, List<Personaje> personajes) {
         this.id = id;
         this.imagen = imagen;
         this.titulo = titulo;
         this.fechaCreacion = fechaCreacion;
         this.calificacion = calificacion;
         this.genero = genero;
+        this.personajes = personajes;
     }
+
+    
 
     public String getId() {
         return id;
@@ -91,13 +99,38 @@ public class Pelicula implements Serializable{
         String date = formato.format(fecha);
         return date;
     }
+
+    public List<Personaje> getPersonajes() {
+        return personajes;
+    }
+
+    public void setPersonajes(List<Personaje> personajes) {
+        this.personajes = personajes;
+    }
+    
+//    public ArrayList<String> nombresPersonajes(List<Personaje> personajes){
+//        ArrayList <String> nombres = new ArrayList();
+//        personajes.forEach((personaje) -> {
+//            nombres.add(personaje.getNombre());
+//        });
+//        return nombres;
+//    }
+    
            
 
 
-    @Override
-    public String toString() {
-        return "Pelicula{" + "id=" + id + ", imagen=" + imagen + ", titulo=" + titulo + ", fechaCreacion= " + cambiarFecha(fechaCreacion) + ", calificacion=" + calificacion + ", genero=" + genero + '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "PELICULA{" + "id=" + id + 
+//                ", IMAGEN=" + imagen + 
+//                ", TITULO=" + titulo + 
+//                ", FECHA DE CREACIÓN = " + 
+//                cambiarFecha(fechaCreacion) + 
+//                ", CALIFICACION=" + 
+//                calificacion + 
+//                ", GENERO =" + genero + 
+//                ", PERSONAJES: " + nombresPersonajes(personajes) + '}';
+//    }
     
     
     
