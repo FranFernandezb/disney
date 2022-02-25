@@ -2,6 +2,7 @@ package com.alkemy.disney.controllers;
 
 import com.alkemy.disney.entities.Pelicula;
 import com.alkemy.disney.entities.Personaje;
+import com.alkemy.disney.excepciones.ErrorServicio;
 import com.alkemy.disney.services.PeliculaService;
 import com.alkemy.disney.services.PersonajeService;
 import java.io.IOException;
@@ -17,53 +18,56 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/characters")
 public class PersonajeController {
-
+    
     @Autowired
     private PersonajeService personajeService;
-
+    
     @Autowired
     private PeliculaService peliculaService;
-
+    
     @GetMapping()
     public ArrayList<String> listarPersonajes() {
         List<Personaje> lista = personajeService.listarPersonajes();
         ArrayList<String> personajes = new ArrayList();
-
+        
         lista.forEach((l) -> {
             personajes.add("{ Imagen: " + l.getImagen() + ", Nombre: " + l.getNombre() + " }");
         });
         return personajes;
     }
-
+    
     @GetMapping("/detalles")
     public List<Personaje> listarDetalles() {
         return personajeService.listarPersonajes();
     }
-
+    
     @GetMapping("/name")
-    public ArrayList<Personaje> obtenerPorNombre(@RequestParam("nombre") String nombre) {
+    public ArrayList<Personaje> obtenerPorNombre(@RequestParam("nombre") String nombre) throws ErrorServicio {
         return personajeService.buscarPorNombre(nombre);
     }
-
+    
     @GetMapping("/age")
-    public ArrayList<Personaje> obtenerPorEdad(@RequestParam("edad") Integer edad) {
+    public ArrayList<Personaje> obtenerPorEdad(@RequestParam("edad") Integer edad) throws ErrorServicio {
         return personajeService.buscarPorEdad(edad);
     }
-
+    
     @GetMapping("/movies") //ARREGLAR ESTE MÉTODO. HACER UNA QUERY ENTERA EN VEZ DE UTILIZAR UN METODO EN EL REPO
-    public ArrayList<Personaje> obtenerPorPeli(@RequestParam("id") String id) {
+    public ArrayList<Personaje> obtenerPorPeli(@RequestParam("id") String id) throws ErrorServicio {
         return personajeService.buscarPorPeli(id);
     }
-
+    
     @PostMapping("/create")
     public Personaje crearPersonaje(@RequestParam MultipartFile imagen,
             @RequestParam String nombre,
             @RequestParam Integer edad,
             @RequestParam Double peso,
             @RequestParam String historia,
-            @RequestParam String idPelicula) {
-
+            @RequestParam String idPelicula) throws ErrorServicio {
+        
         Personaje personaje = new Personaje();
+        
+        personajeService.validate(imagen, nombre, edad, peso, historia, idPelicula);
+        
         personaje.setNombre(nombre);
         personaje.setEdad(edad);
         personaje.setPeso(peso);
@@ -73,24 +77,24 @@ public class PersonajeController {
         if (!imagen.isEmpty()) {
             Path directorioImagenes = Paths.get("src//main//resources//static/images"); //RUTA RELATIVA HACIA EL FOLDER IMAGES DE RECURSOS ESTATICOS
             String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
-
+            
             try {
                 byte[] bytesImg = imagen.getBytes();
                 Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + imagen.getOriginalFilename());
                 Files.write(rutaCompleta, bytesImg);
-
+                
                 personaje.setImagen(imagen.getOriginalFilename());
             } catch (IOException ex) {
             }
         }
-
+        
         return personajeService.guardarPersonaje(personaje);
     }
-
+    
     @DeleteMapping(path = "/{id}")
     public String eliminarPersonaje(@PathVariable("id") String id) {
         boolean ok = this.personajeService.eliminarPersonaje(id);
-
+        
         if (ok) {
             return "Se eliminó el personaje correctamente.";
         } else {
@@ -105,31 +109,30 @@ public class PersonajeController {
             @RequestParam Integer edad,
             @RequestParam Double peso,
             @RequestParam String historia,
-            @RequestParam String idPelicula) {
-
+            @RequestParam String idPelicula) throws ErrorServicio {
+        
         Personaje personaje = (Personaje) personajeService.listarPersonajePorId(id).get();
         personaje.setNombre(nombre);
         personaje.setEdad(edad);
         personaje.setPeso(peso);
         personaje.setHistoria(historia);
         personaje.setPelicula((Pelicula) peliculaService.buscarPeliculaPorId(idPelicula).get());
-
+        
         if (!imagen.isEmpty()) {
             Path directorioImagenes = Paths.get("src//main//resources//static/images"); //RUTA RELATIVA HACIA EL FOLDER IMAGES DE RECURSOS ESTATICOS
             String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
-
+            
             try {
                 byte[] bytesImg = imagen.getBytes();
                 Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + imagen.getOriginalFilename());
                 Files.write(rutaCompleta, bytesImg);
-
+                
                 personaje.setImagen(imagen.getOriginalFilename());
             } catch (IOException ex) {
             }
         }
-
+        
         return personajeService.guardarPersonaje(personaje);
     }
     
-
 }
