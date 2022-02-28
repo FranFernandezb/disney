@@ -7,6 +7,7 @@ import com.alkemy.disney.security.entity.Usuario;
 import com.alkemy.disney.security.enums.Roles;
 import com.alkemy.disney.security.jwt.JwtProvider;
 import com.alkemy.disney.security.service.UsuarioService;
+import com.alkemy.disney.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,9 @@ public class AuthController {
     @Autowired
     JwtProvider jwtProvider;
     
+    @Autowired
+    private EmailService emailService;
+    
     @PostMapping("/register")
     public ResponseEntity<String> registrar(@RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
         
@@ -56,6 +60,7 @@ public class AuthController {
         usuario.setEmail(nuevoUsuario.getEmail());
         usuario.setRol(Roles.USER);
         usuarioService.save(usuario);
+        emailService.enviarEmail(nuevoUsuario.getEmail());
         
          return new ResponseEntity("Usuario guardado con exito.",HttpStatus.OK);
     }
