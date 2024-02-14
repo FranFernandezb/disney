@@ -6,44 +6,34 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
+
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class Pelicula implements Serializable{
-    
+public class Pelicula implements Serializable {
+
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-    
+
     private String imagen;
     private String titulo;
-    
+
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaCreacion;
-    
+
     private Integer calificacion;
-    
+
     @ManyToOne
     private Genero genero;
-    
+
     @OneToMany
     private List<Personaje> personajes;
 
     public Pelicula() {
     }
 
-    public Pelicula(String id, String imagen, String titulo, Date fechaCreacion, Integer calificacion, Genero genero, List<Personaje> personajes) {
-        this.id = id;
-        this.imagen = imagen;
-        this.titulo = titulo;
-        this.fechaCreacion = fechaCreacion;
-        this.calificacion = calificacion;
-        this.genero = genero;
-        this.personajes = personajes;
-    }
-
-    
 
     public String getId() {
         return id;
@@ -92,10 +82,10 @@ public class Pelicula implements Serializable{
     public void setGenero(Genero genero) {
         this.genero = genero;
     }
-    
-    public String cambiarFecha(Date fecha){
+
+    public String cambiarFecha(Date fecha) {
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-        
+
         String date = formato.format(fecha);
         return date;
     }
@@ -107,7 +97,7 @@ public class Pelicula implements Serializable{
     public void setPersonajes(List<Personaje> personajes) {
         this.personajes = personajes;
     }
-    
+
 //    public ArrayList<String> nombresPersonajes(List<Personaje> personajes){
 //        ArrayList <String> nombres = new ArrayList();
 //        personajes.forEach((personaje) -> {
@@ -115,8 +105,6 @@ public class Pelicula implements Serializable{
 //        });
 //        return nombres;
 //    }
-    
-           
 
 
 //    @Override
@@ -131,7 +119,6 @@ public class Pelicula implements Serializable{
 //                ", GENERO =" + genero + 
 //                ", PERSONAJES: " + nombresPersonajes(personajes) + '}';
 //    }
-    
-    
-    
+
+
 }

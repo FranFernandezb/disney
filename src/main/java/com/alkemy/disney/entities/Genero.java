@@ -18,12 +18,6 @@ public class Genero implements Serializable{
     public Genero() {
     }
 
-    public Genero(String id, String nombre, String imagen) {
-        this.id = id;
-        this.nombre = nombre;
-        this.imagen = imagen;
-    }
-
     public String getId() {
         return id;
     }

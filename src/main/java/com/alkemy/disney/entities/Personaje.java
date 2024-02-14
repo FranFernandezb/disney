@@ -2,36 +2,27 @@ package com.alkemy.disney.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class Personaje implements Serializable{
-    
+public class Personaje implements Serializable {
+
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-    
+
     private String imagen;
     private String nombre;
     private Integer edad;
     private Double peso;
     private String historia;
-    
+
     @ManyToOne
     private Pelicula pelicula;
 
     public Personaje() {
-    }
-
-    public Personaje(String id, String imagen, String nombre, Integer edad, Double peso, String historia, Pelicula pelicula) {
-        this.id = id;
-        this.imagen = imagen;
-        this.nombre = nombre;
-        this.edad = edad;
-        this.peso = peso;
-        this.historia = historia;
-        this.pelicula = pelicula;
     }
 
     public String getId() {
@@ -89,6 +80,6 @@ public class Personaje implements Serializable{
     public void setPelicula(Pelicula pelicula) {
         this.pelicula = pelicula;
     }
-    
-    
+
+
 }
