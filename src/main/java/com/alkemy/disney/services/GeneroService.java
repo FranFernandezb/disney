@@ -1,8 +1,8 @@
 package com.alkemy.disney.services;
 
-import com.alkemy.disney.entities.Genero;
+import com.alkemy.disney.entities.Gender;
 import com.alkemy.disney.excepciones.ErrorServicio;
-import com.alkemy.disney.repositories.GeneroRepository;
+import com.alkemy.disney.repositories.GenderRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,32 +10,32 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class GeneroService {
+public class GenderService {
 
     @Autowired
-    private GeneroRepository generoRepository;
+    private GenderRepository genderRepository;
 
-    public Genero guardarGenero(Genero genero) {
-        return generoRepository.save(genero);
+    public Gender saveGender(Gender gender) {
+        return genderRepository.save(gender);
     }
 
-    public List<Genero> listarGeneros() {
-        return generoRepository.findAll();
+    public List<Gender> listAllGenders() {
+        return genderRepository.findAll();
     }
 
-    public boolean eliminarGenero(String id) {
+    public boolean deleteGender(String id) {
         try {
-            generoRepository.deleteById(id);
+            genderRepository.deleteById(id);
             return true;
         } catch (Exception err) {
             return false;
         }
     }
 
-    public Optional buscarPorId(String id) throws ErrorServicio {
+    public Optional findById(String id) throws ErrorServicio {
 
-        if (generoRepository.findById(id).isPresent()) {
-            return generoRepository.findById(id);
+        if (genderRepository.findById(id).isPresent()) {
+            return genderRepository.findById(id);
         } else {
             throw new ErrorServicio("No se ha encontrado un género con ese ID.");
         }

@@ -19,6 +19,6 @@ public interface MovieRepository extends JpaRepository<Movie, String> {
 
     List<Movie> findAllByOrderByCreationDateDesc();
 
-    @Query("SELECT p FROM Movie p WHERE p.genero.id = :id")
+    @Query("SELECT p FROM Movie p WHERE p.gender.id = :id")
     ArrayList<Movie> findByGender(@Param("id") String id);
 }

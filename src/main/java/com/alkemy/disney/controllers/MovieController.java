@@ -1,11 +1,11 @@
 package com.alkemy.disney.controllers;
 
 import com.alkemy.disney.dto.MovieJsonResponse;
-import com.alkemy.disney.entities.Genero;
+import com.alkemy.disney.entities.Gender;
 import com.alkemy.disney.entities.Movie;
 import com.alkemy.disney.entities.Character;
 import com.alkemy.disney.excepciones.ErrorServicio;
-import com.alkemy.disney.services.GeneroService;
+import com.alkemy.disney.services.GenderService;
 import com.alkemy.disney.services.MovieService;
 import com.alkemy.disney.services.CharacterService;
 
@@ -31,7 +31,7 @@ public class MovieController {
     private MovieService movieService;
 
     @Autowired
-    private GeneroService generoService;
+    private GenderService genderService;
 
     @Autowired
     private CharacterService characterService;
@@ -84,16 +84,16 @@ public class MovieController {
                             @RequestParam String tittle,
                             @RequestParam String fechaString,
                             @RequestParam Integer score,
-                            @RequestParam String idGenero,
+                            @RequestParam String idGender,
                             @RequestParam String idCharacter) throws ErrorServicio {
 
         Movie movie = new Movie();
 
-        this.movieService.validate(image, tittle, fechaString, score, idGenero, idCharacter);
+        this.movieService.validate(image, tittle, fechaString, score, idGender, idCharacter);
 
         movie.setTittle(tittle);
         movie.setScore(score);
-        movie.setGenero((Genero) generoService.buscarPorId(idGenero).get());
+        movie.setGender((Gender) genderService.findById(idGender).get());
 
         Character Character = this.characterService.findCharacterById(idCharacter);
 
@@ -144,13 +144,13 @@ public class MovieController {
                                 @RequestParam String tittle,
                                 @RequestParam String fechaString,
                                 @RequestParam Integer score,
-                                @RequestParam String idGenero,
+                                @RequestParam String idGender,
                                 @RequestParam String idCharacter) throws ErrorServicio {
 
         Movie movie = (Movie) this.movieService.buscarMoviePorId(id).get();
         movie.setTittle(tittle);
         movie.setScore(score);
-        movie.setGenero((Genero) generoService.buscarPorId(idGenero).get());
+        movie.setGender((Gender) genderService.findById(idGender).get());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         try {

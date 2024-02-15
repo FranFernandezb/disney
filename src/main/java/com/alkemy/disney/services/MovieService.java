@@ -72,7 +72,7 @@ public class MovieService {
         }
     }
 
-    public void validate(MultipartFile image, String tittle, String fechaString, Integer score, String idGenero, String idCharacter) throws ErrorServicio {
+    public void validate(MultipartFile image, String tittle, String fechaString, Integer score, String idGender, String idCharacter) throws ErrorServicio {
         if (image == null || image.isEmpty()) {
             throw new ErrorServicio("La película debe tener una image asociada.");
         }
@@ -89,7 +89,7 @@ public class MovieService {
             throw new ErrorServicio("La película debe estar calificada y debe ser del 1 al 5.");
         }
 
-        if (idGenero == null || idGenero.isEmpty()) {
+        if (idGender == null || idGender.isEmpty()) {
             throw new ErrorServicio("La película debe tener un género asociado.");
         }
 
