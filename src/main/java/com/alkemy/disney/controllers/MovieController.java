@@ -147,7 +147,7 @@ public class MovieController {
                                 @RequestParam String idGender,
                                 @RequestParam String idCharacter) throws ErrorServicio {
 
-        Movie movie = (Movie) this.movieService.buscarMoviePorId(id).get();
+        Movie movie = (Movie) this.movieService.findMovieById(id).get();
         movie.setTittle(tittle);
         movie.setScore(score);
         movie.setGender((Gender) genderService.findById(idGender).get());

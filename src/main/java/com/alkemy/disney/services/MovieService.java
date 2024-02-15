@@ -35,7 +35,7 @@ public class MovieService {
         }
     }
 
-    public Optional buscarMoviePorId(String id) throws ErrorServicio {
+    public Optional findMovieById(String id) throws ErrorServicio {
 
         if (this.movieRepository.findById(id).isPresent()) {
             return this.movieRepository.findById(id);

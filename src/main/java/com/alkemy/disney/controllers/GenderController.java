@@ -27,7 +27,7 @@ public class GenderController {
     }
 
     @PostMapping("/create")
-    public Gender crearGender(@RequestParam("name") String name, @RequestParam("image") MultipartFile image) throws ErrorServicio {
+    public Gender createGender(@RequestParam("name") String name, @RequestParam("image") MultipartFile image) throws ErrorServicio {
 
         Gender gender = new Gender();
         try {
@@ -37,15 +37,11 @@ public class GenderController {
                 Path imageRelativePath = Paths.get("src//main//resources//static/images"); //RUTA RELATIVA HACIA EL FOLDER IMAGES DE RECURSOS ESTATICOS
                 String absolutePath = imageRelativePath.toFile().getAbsolutePath();
 
-                try {
-                    byte[] bytesImg = image.getBytes();
-                    Path completePath = Paths.get(absolutePath + "//" + image.getOriginalFilename());
-                    Files.write(completePath, bytesImg);
+                byte[] bytesImg = image.getBytes();
+                Path completePath = Paths.get(absolutePath + "//" + image.getOriginalFilename());
+                Files.write(completePath, bytesImg);
 
-                    gender.setImage(image.getOriginalFilename());
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+                gender.setImage(image.getOriginalFilename());
             }
         } catch (Exception e) {
             e.printStackTrace();
