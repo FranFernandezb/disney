@@ -25,7 +25,7 @@ public class GenderService {
 
     public boolean deleteGender(String id) {
         try {
-            genderRepository.deleteById(id);
+            this.genderRepository.deleteById(id);
             return true;
         } catch (Exception err) {
             return false;
@@ -34,8 +34,8 @@ public class GenderService {
 
     public Optional findById(String id) throws ErrorServicio {
 
-        if (genderRepository.findById(id).isPresent()) {
-            return genderRepository.findById(id);
+        if (this.genderRepository.findById(id).isPresent()) {
+            return this.genderRepository.findById(id);
         } else {
             throw new ErrorServicio("No se ha encontrado un género con ese ID.");
         }
