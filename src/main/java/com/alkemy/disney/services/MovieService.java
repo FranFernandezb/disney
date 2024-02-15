@@ -45,7 +45,7 @@ public class MovieService {
 
     }
 
-    public ArrayList<Movie> buscarPortittle(String tittle) throws ErrorServicio {
+    public List<Movie> findByTittle(String tittle) throws ErrorServicio {
 
         if (this.movieRepository.findBytittle(tittle).isEmpty()) {
             throw new ErrorServicio("No se ha podido encontrar una película con ese título.");
@@ -54,15 +54,15 @@ public class MovieService {
         return this.movieRepository.findBytittle(tittle);
     }
 
-    public ArrayList<Movie> buscarPorGenero(String id) throws ErrorServicio {
+    public ArrayList<Movie> findByGender(String id) throws ErrorServicio {
 
-        if (this.movieRepository.buscarPorGenero(id).isEmpty()) {
+        if (this.movieRepository.findByGender(id).isEmpty()) {
             throw new ErrorServicio("No se ha podido encontrar una película de ese género.");
         }
-        return this.movieRepository.buscarPorGenero(id);
+        return this.movieRepository.findByGender(id);
     }
 
-    public List<Movie> ordenar(String orden) throws ErrorServicio {
+    public List<Movie> sort(String orden) throws ErrorServicio {
         if (orden.toUpperCase().matches("ASC")) {
             return this.movieRepository.findAllByOrderByCreationDateAsc();
         } else if (orden.toUpperCase().matches("DESC")) {

@@ -13,12 +13,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, String> {
 
-    ArrayList<Movie> findBytittle(String tittle);
+    List<Movie> findBytittle(String tittle);
 
     List<Movie> findAllByOrderByCreationDateAsc();
 
     List<Movie> findAllByOrderByCreationDateDesc();
 
     @Query("SELECT p FROM Movie p WHERE p.genero.id = :id")
-    ArrayList<Movie> buscarPorGenero(@Param("id") String id);
+    ArrayList<Movie> findByGender(@Param("id") String id);
 }

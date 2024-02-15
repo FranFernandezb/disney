@@ -30,10 +30,10 @@ public class CharacterService {
     }
 
     public Character saveCharacter(Character Character) {
-        return CharacterRepository.save(Character);
+        return this.characterRepository.save(Character);
     }
 
-    public Character listarCharacterPorId(String id) throws ErrorServicio {
+    public Character findCharacterById(String id) throws ErrorServicio {
 
         if (this.characterRepository.findById(id).isPresent()) {
             return this.characterRepository.findById(id).get();

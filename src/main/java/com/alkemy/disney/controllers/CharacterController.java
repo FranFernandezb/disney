@@ -123,7 +123,7 @@ public class CharacterController {
             @RequestParam String history,
             @RequestParam String movieId) throws ErrorServicio {
         
-        Character character = this.characterService.listarCharacterPorId(id);
+        Character character = this.characterService.findCharacterById(id);
         character.setName(name);
         character.setAge(age);
         character.setWeight(weight);
