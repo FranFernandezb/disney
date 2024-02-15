@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.alkemy.disney.utils.constants.Constants;
+import com.alkemy.disney.utils.messages.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -129,13 +131,16 @@ public class MovieController {
 
     @DeleteMapping(path = "/{id}")
     public String deleteMovie(@PathVariable("id") String id) {
-        boolean ok = this.movieService.deleteMovie(id);
-
-        if (ok) {
-            return "Se eliminó la película ";
-        } else {
-            return "No se pudo eliminar la película con ese Id";
+        String response = null;
+        try {
+            boolean ok = this.movieService.deleteMovie(id);
+            response = ok
+                    ? String.format(Messages.ENTITY_DELETED_WITH_SUCCESS, Constants.MOVIE, id)
+                    : String.format(Messages.ENTITY_UNABLE_TO_BE_DELETED, Constants.MOVIE, id);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return response;
     }
 
     @PutMapping(path = "{id}") // BUSCAR COMO DOCUMENTAR UNA API CON POSTMAN.   

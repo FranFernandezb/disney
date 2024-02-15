@@ -10,6 +10,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import com.alkemy.disney.utils.constants.Constants;
+import com.alkemy.disney.utils.messages.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,14 +53,18 @@ public class GenderController {
 
     @DeleteMapping(path = "/{id}")
     public String delete(@PathVariable("id") String id) {
-        boolean ok = this.genderService.deleteGender(id);
-
-        if (ok) {
-            return "Se eliminó el género";
-        } else {
-            return "No se pudo eliminar al género con ese Id";
+        String response = null;
+        try {
+            boolean ok = this.genderService.deleteGender(id);
+            response = ok
+                    ? String.format(Messages.ENTITY_DELETED_WITH_SUCCESS, Constants.GENDER, id)
+                    : String.format(Messages.ENTITY_UNABLE_TO_BE_DELETED, Constants.GENDER, id);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return response;
     }
+
 
     @PutMapping(path = "/{id}")
     public Gender updateGender(@PathVariable("id") String id, @RequestParam String name, @RequestParam MultipartFile image) throws ErrorServicio {

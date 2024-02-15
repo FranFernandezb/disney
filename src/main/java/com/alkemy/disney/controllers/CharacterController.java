@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.alkemy.disney.utils.constants.Constants;
+import com.alkemy.disney.utils.messages.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +41,6 @@ public class CharacterController {
         List<CharacterJsonResponse> characters = new ArrayList<>();
         try {
             charactersList = this.characterService.findAllCharacters();
-
             charactersList.forEach((character) -> {
                 CharacterJsonResponse characterJsonResponse = new CharacterJsonResponse(
                         character.getImage(), character.getName()
@@ -133,11 +134,13 @@ public class CharacterController {
 
     @DeleteMapping(path = "/{id}")
     public String deleteCharacter(@PathVariable("id") String id) {
-        boolean ok = Boolean.TRUE;
+        boolean ok;
         String response = null;
         try {
             ok = this.characterService.deleteCharacter(id);
-            response = ok ? "Se eliminó el Character correctamente." : "No se pudo eliminar al Character con ese Id.";
+            response = ok
+                    ? String.format(Messages.ENTITY_DELETED_WITH_SUCCESS, Constants.CHARACTER, id)
+                    : String.format(Messages.ENTITY_UNABLE_TO_BE_DELETED, Constants.CHARACTER, id);
         } catch (Exception e) {
             e.printStackTrace();
         }
