@@ -22,7 +22,7 @@ public class UsuarioService{
         //Usuario usuario = new Usuario();
         
 //        if (username == null || username.isEmpty()) {
-//            throw new ErrorServicio("El nombre de usuario no puede estar vacío.");
+//            throw new ErrorServicio("El name de usuario no puede estar vacío.");
 //        }
 //        if (password == null || password.isEmpty()) {
 //            throw new ErrorServicio("La contraseña no puede estar vacía.");

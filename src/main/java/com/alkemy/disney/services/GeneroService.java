@@ -42,14 +42,14 @@ public class GeneroService {
 
     }
 
-    public void validate(String nombre, MultipartFile imagen) throws ErrorServicio {
+    public void validate(String name, MultipartFile image) throws ErrorServicio {
 
-        if (nombre == null || nombre.isEmpty()) {
-            throw new ErrorServicio("El género debe tener un nombre.");
+        if (name == null || name.isEmpty()) {
+            throw new ErrorServicio("El género debe tener un name.");
         }
 
-        if (imagen == null || imagen.isEmpty()) {
-            throw new ErrorServicio("El género debe tener una imagen.");
+        if (image == null || image.isEmpty()) {
+            throw new ErrorServicio("El género debe tener una image.");
 
         }
     }

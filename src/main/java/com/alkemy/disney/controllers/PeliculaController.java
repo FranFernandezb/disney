@@ -1,12 +1,12 @@
 package com.alkemy.disney.controllers;
 
 import com.alkemy.disney.entities.Genero;
-import com.alkemy.disney.entities.Pelicula;
-import com.alkemy.disney.entities.Personaje;
+import com.alkemy.disney.entities.Movie;
+import com.alkemy.disney.entities.Character;
 import com.alkemy.disney.excepciones.ErrorServicio;
 import com.alkemy.disney.services.GeneroService;
-import com.alkemy.disney.services.PeliculaService;
-import com.alkemy.disney.services.PersonajeService;
+import com.alkemy.disney.services.MovieService;
+import com.alkemy.disney.services.CharacterService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,102 +21,102 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/pelicula")
-public class PeliculaController {
+@RequestMapping("/Movie")
+public class MovieController {
     
     @Autowired
-    private PeliculaService peliculaService;
+    private MovieService MovieService;
     
     @Autowired
     private GeneroService generoService;
     
     @Autowired
-    private PersonajeService personajeService;
+    private CharacterService CharacterService;
     
     @GetMapping("/detalle")
-    public List<Pelicula> listarDetalles() {
-        return peliculaService.mostrarPeliculas();
+    public List<Movie> listarDetalles() {
+        return MovieService.displayMovies();
     }
     
     @GetMapping()
-    public ArrayList<String> listarPeliculas() {
-        List<Pelicula> lista = peliculaService.mostrarPeliculas();
-        ArrayList<String> peliculas = new ArrayList();
+    public ArrayList<String> listarMovies() {
+        List<Movie> lista = MovieService.displayMovies();
+        ArrayList<String> Movies = new ArrayList();
         
         lista.forEach((l) -> {
             SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
-            String date = formato.format(l.getFechaCreacion());
-            peliculas.add("{ Imagen: " + l.getImagen() + ", Título: " + l.getTitulo() + ", Fecha de Creación: " + date + " }");
+            String date = formato.format(l.getcreationDate());
+            Movies.add("{ image: " + l.getimage() + ", Título: " + l.gettittle() + ", Fecha de Creación: " + date + " }");
         });
-        return peliculas;
+        return Movies;
     }
     
     @GetMapping("/name")
-    public ArrayList<Pelicula> obtenerPorTitulo(@RequestParam("titulo") String titulo) throws ErrorServicio {
-        return peliculaService.buscarPorTitulo(titulo);
+    public ArrayList<Movie> obtenerPortittle(@RequestParam("tittle") String tittle) throws ErrorServicio {
+        return MovieService.buscarPortittle(tittle);
     }
     
     @GetMapping("/genre")
-    public ArrayList<Pelicula> obtenerPorGenero(@RequestParam("id") String id) throws ErrorServicio {
-        return peliculaService.buscarPorGenero(id);
+    public ArrayList<Movie> obtenerPorGenero(@RequestParam("id") String id) throws ErrorServicio {
+        return MovieService.buscarPorGenero(id);
     }
     
     @GetMapping("/order")
-    public ArrayList<Pelicula> ordenar(@RequestParam String orden) throws ErrorServicio {
-        return peliculaService.ordenar(orden);
+    public ArrayList<Movie> ordenar(@RequestParam String orden) throws ErrorServicio {
+        return MovieService.ordenar(orden);
     }
     
-    @PostMapping("/create") //EN VEZ DE REPETIR DOS VECES EL CODIGO PARA CREAR Y MODIFICAR UNA PELI. HACER METODOS PARA GUARDAR IMAGENES Y FECHAS.
-    public Pelicula crearPelicula(@RequestParam MultipartFile imagen,
-            @RequestParam String titulo,
+    @PostMapping("/create") //EN VEZ DE REPETIR DOS VECES EL CODIGO PARA CREAR Y MODIFICAR UNA PELI. HACER METODOS PARA GUARDAR imageES Y FECHAS.
+    public Movie crearMovie(@RequestParam MultipartFile image,
+            @RequestParam String tittle,
             @RequestParam String fechaString,
-            @RequestParam Integer calificacion,
+            @RequestParam Integer score,
             @RequestParam String idGenero,
-            @RequestParam String idPersonaje) throws ErrorServicio {
+            @RequestParam String idCharacter) throws ErrorServicio {
         
-        Pelicula pelicula = new Pelicula();
+        Movie Movie = new Movie();
         
-        peliculaService.validate(imagen, titulo, fechaString, calificacion, idGenero, idPersonaje);
+        MovieService.validate(image, tittle, fechaString, score, idGenero, idCharacter);
         
-        pelicula.setTitulo(titulo);
-        pelicula.setCalificacion(calificacion);
-        pelicula.setGenero((Genero) generoService.buscarPorId(idGenero).get());
+        Movie.settittle(tittle);
+        Movie.setscore(score);
+        Movie.setGenero((Genero) generoService.buscarPorId(idGenero).get());
         
-        Personaje personaje = (Personaje) personajeService.listarPersonajePorId(idPersonaje).get();
+        Character Character = CharacterService.listarCharacterPorId(idCharacter);
         
-        List<Personaje> lista = pelicula.getPersonajes();
-        lista.add(personaje);
-        pelicula.setPersonajes(lista);
+        List<Character> lista = Movie.getCharacters();
+        lista.add(Character);
+        Movie.setCharacters(lista);
         
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         try {
             Date fecha = formato.parse(fechaString);
-            pelicula.setFechaCreacion(fecha);
+            Movie.setcreationDate(fecha);
             
         } catch (ParseException ex) {
             ex.getMessage();
         }
         
-        if (!imagen.isEmpty()) {
-            Path directorioImagenes = Paths.get("src//main//resources//static/images"); //RUTA RELATIVA HACIA EL FOLDER IMAGES DE RECURSOS ESTATICOS
-            String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
+        if (!image.isEmpty()) {
+            Path directorioimagees = Paths.get("src//main//resources//static/images"); //RUTA RELATIVA HACIA EL FOLDER IMAGES DE RECURSOS ESTATICOS
+            String rutaAbsoluta = directorioimagees.toFile().getAbsolutePath();
             
             try {
-                byte[] bytesImg = imagen.getBytes();
-                Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + imagen.getOriginalFilename());
+                byte[] bytesImg = image.getBytes();
+                Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + image.getOriginalFilename());
                 Files.write(rutaCompleta, bytesImg);
                 
-                pelicula.setImagen(imagen.getOriginalFilename());
+                Movie.setimage(image.getOriginalFilename());
             } catch (IOException ex) {
             }
         }
         
-        return peliculaService.guardarPelicula(pelicula);
+        return MovieService.saveMovie(Movie);
     }
     
     @DeleteMapping(path = "/{id}")
-    public String eliminarPelicula(@PathVariable("id") String id) {
-        boolean ok = this.peliculaService.eliminarPelicula(id);
+    public String deleteMovie(@PathVariable("id") String id) {
+        boolean ok = this.MovieService.deleteMovie(id);
         
         if (ok) {
             return "Se eliminó la película ";
@@ -126,48 +126,48 @@ public class PeliculaController {
     }
     
     @PutMapping(path = "{id}") // BUSCAR COMO DOCUMENTAR UNA API CON POSTMAN.   
-    public Pelicula modificarPelicula(@PathVariable("id") String id,
-            @RequestParam MultipartFile imagen,
-            @RequestParam String titulo,
+    public Movie modificarMovie(@PathVariable("id") String id,
+            @RequestParam MultipartFile image,
+            @RequestParam String tittle,
             @RequestParam String fechaString,
-            @RequestParam Integer calificacion,
+            @RequestParam Integer score,
             @RequestParam String idGenero,
-            @RequestParam String idPersonaje) throws ErrorServicio {
+            @RequestParam String idCharacter) throws ErrorServicio {
         
-        Pelicula pelicula = (Pelicula) peliculaService.buscarPeliculaPorId(id).get();
-        pelicula.setTitulo(titulo);
-        pelicula.setCalificacion(calificacion);
-        pelicula.setGenero((Genero) generoService.buscarPorId(idGenero).get());
+        Movie Movie = (Movie) MovieService.buscarMoviePorId(id).get();
+        Movie.settittle(tittle);
+        Movie.setscore(score);
+        Movie.setGenero((Genero) generoService.buscarPorId(idGenero).get());
         
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         try {
             Date fecha = formato.parse(fechaString);
-            pelicula.setFechaCreacion(fecha);
+            Movie.setcreationDate(fecha);
             
         } catch (ParseException ex) {
             ex.getMessage();
         }
         
-        if (!imagen.isEmpty()) {
-            Path directorioImagenes = Paths.get("src//main//resources//static/images"); //RUTA RELATIVA HACIA EL FOLDER IMAGES DE RECURSOS ESTATICOS
-            String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
+        if (!image.isEmpty()) {
+            Path directorioimagees = Paths.get("src//main//resources//static/images"); //RUTA RELATIVA HACIA EL FOLDER IMAGES DE RECURSOS ESTATICOS
+            String rutaAbsoluta = directorioimagees.toFile().getAbsolutePath();
             
             try {
-                byte[] bytesImg = imagen.getBytes();
-                Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + imagen.getOriginalFilename());
+                byte[] bytesImg = image.getBytes();
+                Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + image.getOriginalFilename());
                 Files.write(rutaCompleta, bytesImg);
                 
-                pelicula.setImagen(imagen.getOriginalFilename());
+                Movie.setimage(image.getOriginalFilename());
             } catch (IOException ex) {
             }
         }
         
-        Personaje personaje = (Personaje) personajeService.listarPersonajePorId(idPersonaje).get();
+        Character Character = (Character) CharacterService.listarCharacterPorId(idCharacter).get();
         
-        List<Personaje> lista = pelicula.getPersonajes();
-        lista.add(personaje);
-        pelicula.setPersonajes(lista);
-        return peliculaService.guardarPelicula(pelicula);
+        List<Character> lista = Movie.getCharacters();
+        lista.add(Character);
+        Movie.setCharacters(lista);
+        return MovieService.saveMovie(Movie);
         
     }
     

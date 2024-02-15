@@ -12,8 +12,8 @@ public class Genero implements Serializable{
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
     
-    private String nombre;
-    private String imagen;
+    private String name;
+    private String image;
 
     public Genero() {
     }
@@ -26,20 +26,20 @@ public class Genero implements Serializable{
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getname() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setname(String name) {
+        this.name = name;
     }
 
-    public String getImagen() {
-        return imagen;
+    public String getimage() {
+        return image;
     }
 
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
+    public void setimage(String image) {
+        this.image = image;
     }
     
     

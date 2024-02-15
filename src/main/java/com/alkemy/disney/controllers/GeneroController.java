@@ -27,22 +27,22 @@ public class GeneroController {
     }
 
     @PostMapping("/create")
-    public Genero crearGenero(@RequestParam("nombre") String nombre, @RequestParam("imagen") MultipartFile imagen) throws ErrorServicio {
+    public Genero crearGenero(@RequestParam("name") String name, @RequestParam("image") MultipartFile image) throws ErrorServicio {
 
         Genero genero = new Genero();
 
-        generoService.validate(nombre, imagen);
-        genero.setNombre(nombre);
-        if (!imagen.isEmpty()) {
-            Path directorioImagenes = Paths.get("src//main//resources//static/images"); //RUTA RELATIVA HACIA EL FOLDER IMAGES DE RECURSOS ESTATICOS
-            String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
+        generoService.validate(name, image);
+        genero.setname(name);
+        if (!image.isEmpty()) {
+            Path directorioimagees = Paths.get("src//main//resources//static/images"); //RUTA RELATIVA HACIA EL FOLDER IMAGES DE RECURSOS ESTATICOS
+            String rutaAbsoluta = directorioimagees.toFile().getAbsolutePath();
 
             try {
-                byte[] bytesImg = imagen.getBytes();
-                Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + imagen.getOriginalFilename());
+                byte[] bytesImg = image.getBytes();
+                Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + image.getOriginalFilename());
                 Files.write(rutaCompleta, bytesImg);
 
-                genero.setImagen(imagen.getOriginalFilename());
+                genero.setimage(image.getOriginalFilename());
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -62,23 +62,23 @@ public class GeneroController {
     }
 
     @PutMapping(path = "/{id}")
-    public Genero modificarGenero(@PathVariable("id") String id, @RequestParam String nombre, @RequestParam MultipartFile imagen) throws ErrorServicio {
+    public Genero modificarGenero(@PathVariable("id") String id, @RequestParam String name, @RequestParam MultipartFile image) throws ErrorServicio {
 
         Genero genero = null;
         try {
             genero = (Genero) generoService.buscarPorId(id).get();
 
-            genero.setNombre(nombre);
+            genero.setname(name);
 
-            Path directorioImagenes = Paths.get("src//main//resources//static/images"); //RUTA RELATIVA HACIA EL FOLDER IMAGES DE RECURSOS ESTATICOS
-            String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
+            Path directorioimagees = Paths.get("src//main//resources//static/images"); //RUTA RELATIVA HACIA EL FOLDER IMAGES DE RECURSOS ESTATICOS
+            String rutaAbsoluta = directorioimagees.toFile().getAbsolutePath();
 
 
-            byte[] bytesImg = imagen.getBytes();
-            Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + imagen.getOriginalFilename());
+            byte[] bytesImg = image.getBytes();
+            Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + image.getOriginalFilename());
             Files.write(rutaCompleta, bytesImg);
 
-            genero.setImagen(imagen.getOriginalFilename());
+            genero.setimage(image.getOriginalFilename());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
