@@ -11,7 +11,6 @@ public class DisneyApplication {
 	}
 
 	//First stage:
-	//TODO: Delete hardcoded messages for constants with String.format fields.
 	//TODO: Use tokens to access to controllers, and validate them
 	//TODO: Add logs to project in all levels.
 	//TODO: Try-out the complete product
