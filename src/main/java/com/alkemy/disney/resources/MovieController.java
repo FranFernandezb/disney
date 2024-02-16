@@ -1,4 +1,4 @@
-package com.alkemy.disney.controllers;
+package com.alkemy.disney.resources;
 
 import com.alkemy.disney.dto.MovieJsonResponse;
 import com.alkemy.disney.entities.Figure;

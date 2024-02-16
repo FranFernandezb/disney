@@ -8,14 +8,14 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
-public class SwaggerConfiguration {
-
+public class SpringFoxConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.alkemy.disney.controllers"))
+                .apis(RequestHandlerSelectors.basePackage("com.alkemy.disney.resources"))
                 .paths(PathSelectors.any())
                 .build();
     }
 }
+

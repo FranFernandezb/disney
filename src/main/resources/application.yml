@@ -32,6 +32,9 @@ spring:
         http-only: true
       tracking-modes:
       - cookie
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
  
       
           
