@@ -1,7 +1,7 @@
 package com.alkemy.disney.security.service;
 
 import com.alkemy.disney.security.entity.Usuario;
-import com.alkemy.disney.excepciones.ErrorServicio;
+import com.alkemy.disney.excepciones.ServiceException;
 import com.alkemy.disney.security.enums.Roles;
 import com.alkemy.disney.security.repository.UsuarioRepository;
 import java.util.Optional;
@@ -22,13 +22,13 @@ public class UsuarioService{
         //Usuario usuario = new Usuario();
         
 //        if (username == null || username.isEmpty()) {
-//            throw new ErrorServicio("El name de usuario no puede estar vacío.");
+//            throw new ServiceException("El name de usuario no puede estar vacío.");
 //        }
 //        if (password == null || password.isEmpty()) {
-//            throw new ErrorServicio("La contraseña no puede estar vacía.");
+//            throw new ServiceException("La contraseña no puede estar vacía.");
 //        }
 //        if (email == null || email.isEmpty()) {
-//            throw new ErrorServicio("La contraseña no puede estar vacía.");
+//            throw new ServiceException("La contraseña no puede estar vacía.");
 //        }
         usuario.setRol(Roles.USER);
         usuarioRepository.save(usuario);

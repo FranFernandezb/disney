@@ -1,7 +1,7 @@
 package com.alkemy.disney.controllers;
 
 import com.alkemy.disney.entities.Gender;
-import com.alkemy.disney.excepciones.ErrorServicio;
+import com.alkemy.disney.excepciones.ServiceException;
 import com.alkemy.disney.services.GenderService;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class GenderController {
     }
 
     @PostMapping("/create")
-    public Gender createGender(@RequestParam("name") String name, @RequestParam("image") MultipartFile image) throws ErrorServicio {
+    public Gender createGender(@RequestParam("name") String name, @RequestParam("image") MultipartFile image) throws ServiceException {
 
         Gender gender = new Gender();
         try {
@@ -67,7 +67,7 @@ public class GenderController {
 
 
     @PutMapping(path = "/{id}")
-    public Gender updateGender(@PathVariable("id") String id, @RequestParam String name, @RequestParam MultipartFile image) throws ErrorServicio {
+    public Gender updateGender(@PathVariable("id") String id, @RequestParam String name, @RequestParam MultipartFile image) throws ServiceException {
 
         Gender gender = null;
         try {

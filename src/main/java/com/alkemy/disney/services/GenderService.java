@@ -1,7 +1,7 @@
 package com.alkemy.disney.services;
 
 import com.alkemy.disney.entities.Gender;
-import com.alkemy.disney.excepciones.ErrorServicio;
+import com.alkemy.disney.excepciones.ServiceException;
 import com.alkemy.disney.repositories.GenderRepository;
 
 import java.util.List;
@@ -34,23 +34,23 @@ public class GenderService {
         }
     }
 
-    public Optional findById(String id) throws ErrorServicio {
+    public Optional findById(String id) throws ServiceException {
 
         if (this.genderRepository.findById(id).isPresent()) {
             return this.genderRepository.findById(id);
         } else {
-            throw new ErrorServicio("No se ha encontrado un género con ese ID.");
+            throw new ServiceException("No se ha encontrado un género con ese ID.");
         }
     }
 
-    public void validate(String name, MultipartFile image) throws ErrorServicio {
+    public void validate(String name, MultipartFile image) throws ServiceException {
 
         if (name == null || name.isEmpty()) {
-            throw new ErrorServicio("El género debe tener un name.");
+            throw new ServiceException("El género debe tener un name.");
         }
 
         if (image == null || image.isEmpty()) {
-            throw new ErrorServicio("El género debe tener una image.");
+            throw new ServiceException("El género debe tener una image.");
 
         }
     }

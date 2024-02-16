@@ -4,7 +4,7 @@ import com.alkemy.disney.dto.MovieJsonResponse;
 import com.alkemy.disney.entities.Gender;
 import com.alkemy.disney.entities.Movie;
 import com.alkemy.disney.entities.Character;
-import com.alkemy.disney.excepciones.ErrorServicio;
+import com.alkemy.disney.excepciones.ServiceException;
 import com.alkemy.disney.services.GenderService;
 import com.alkemy.disney.services.MovieService;
 import com.alkemy.disney.services.CharacterService;
@@ -66,17 +66,17 @@ public class MovieController {
     }
 
     @GetMapping("/name")
-    public List<Movie> findByTittle(@RequestParam("tittle") String tittle) throws ErrorServicio {
+    public List<Movie> findByTittle(@RequestParam("tittle") String tittle) throws ServiceException {
         return this.movieService.findByTittle(tittle);
     }
 
     @GetMapping("/gender")
-    public ArrayList<Movie> findByGender(@RequestParam("id") String id) throws ErrorServicio {
+    public ArrayList<Movie> findByGender(@RequestParam("id") String id) throws ServiceException {
         return this.movieService.findByGender(id);
     }
 
     @GetMapping("/order")
-    public List<Movie> sort(@RequestParam String order) throws ErrorServicio {
+    public List<Movie> sort(@RequestParam String order) throws ServiceException {
         return this.movieService.sort(order);
     }
 
@@ -87,7 +87,7 @@ public class MovieController {
                             @RequestParam String fechaString,
                             @RequestParam Integer score,
                             @RequestParam String idGender,
-                            @RequestParam String idCharacter) throws ErrorServicio {
+                            @RequestParam String idCharacter) throws ServiceException {
 
         Movie movie = new Movie();
 
@@ -150,7 +150,7 @@ public class MovieController {
                                 @RequestParam String fechaString,
                                 @RequestParam Integer score,
                                 @RequestParam String idGender,
-                                @RequestParam String idCharacter) throws ErrorServicio {
+                                @RequestParam String idCharacter) throws ServiceException {
 
         Movie movie = (Movie) this.movieService.findMovieById(id).get();
         movie.setTittle(tittle);
