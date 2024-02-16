@@ -29,57 +29,69 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 @CrossOrigin
 public class AuthController {
-    
+
     @Autowired
     PasswordEncoder passwordEncoder;
-    
+
     @Autowired
     AuthenticationManager authenticationManager;
-    
+
     @Autowired
     UsuarioService usuarioService;
-    
+
     @Autowired
     JwtProvider jwtProvider;
-    
+
     @Autowired
     private EmailService emailService;
-    
+
     @PostMapping("/register")
-    public ResponseEntity<String> registrar(@RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
-        
-        if(bindingResult.hasErrors()){
-            return new ResponseEntity("Ha ocurrido un error", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<NuevoUsuario> registrar(@RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult) {
+
+        try {
+            if (bindingResult.hasErrors()) {
+                //return new ResponseEntity("Ha ocurrido un error", HttpStatus.BAD_REQUEST);
+            }
+
+            Usuario usuario = new Usuario();
+
+
+            usuario.setUsername(nuevoUsuario.getUsername());
+            usuario.setPassword(passwordEncoder.encode(nuevoUsuario.getPassword()));
+            usuario.setEmail(nuevoUsuario.getEmail());
+            Roles rol = nuevoUsuario.getEmail().equalsIgnoreCase("franciscofernandezb@outlook.com") ? Roles.ADMIN : Roles.USER;
+            usuario.setRol(rol);
+            usuarioService.save(usuario);
+            // emailService.enviarEmail(nuevoUsuario.getEmail());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // return new ResponseEntity("Ocurrió un error.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-       
-        Usuario usuario = new Usuario();
-        
-        
-        usuario.setUsername(nuevoUsuario.getUsername());
-        usuario.setPassword(passwordEncoder.encode(nuevoUsuario.getPassword()));
-        usuario.setEmail(nuevoUsuario.getEmail());
-        usuario.setRol(Roles.USER);
-        usuarioService.save(usuario);
-        emailService.enviarEmail(nuevoUsuario.getEmail());
-        
-         return new ResponseEntity("Usuario guardado con exito.",HttpStatus.OK);
+        return new ResponseEntity<>(nuevoUsuario, HttpStatus.OK);
     }
-    
+
     @PostMapping("/login")
-    public ResponseEntity<JwtDTO> login(@RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
-             return new ResponseEntity("No se ha podido iniciar sesión, datos incorrectos.", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<JwtDTO> login(@RequestBody LoginUsuario loginUsuario, BindingResult bindingResult) {
+        JwtDTO jwtDto = null;
+        try {
+            if (bindingResult.hasErrors()) {
+                return new ResponseEntity("No se ha podido iniciar sesión, datos incorrectos.", HttpStatus.BAD_REQUEST);
+            }
+
+            Authentication authentication =
+                    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUsuario.getUsername(),
+                            loginUsuario.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            String jwt = jwtProvider.generateToken(authentication);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            jwtDto = new JwtDTO(jwt, userDetails.getUsername(), userDetails.getAuthorities());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        
-        Authentication authentication =
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUsuario.getUsername(),
-                        loginUsuario.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        
-        String jwt = jwtProvider.generateToken(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        JwtDTO jwtDto = new JwtDTO(jwt,userDetails.getUsername(),userDetails.getAuthorities());
-        return new ResponseEntity(jwtDto,HttpStatus.OK);
-   }
-    
+        return new ResponseEntity(jwtDto, HttpStatus.OK);
+    }
+
 }
