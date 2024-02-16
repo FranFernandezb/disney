@@ -1,4 +1,4 @@
-package com.alkemy.disney.resources;
+package com.alkemy.disney.controllers;
 
 import com.alkemy.disney.entities.Gender;
 import com.alkemy.disney.excepciones.ServiceException;
