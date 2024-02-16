@@ -34,6 +34,6 @@ public class Movie implements Serializable {
     private Gender gender;
 
     @OneToMany
-    private List<Character> characters;
+    private List<Figure> characters;
 
 }

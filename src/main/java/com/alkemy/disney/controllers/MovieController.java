@@ -1,9 +1,9 @@
 package com.alkemy.disney.controllers;
 
 import com.alkemy.disney.dto.MovieJsonResponse;
+import com.alkemy.disney.entities.Figure;
 import com.alkemy.disney.entities.Gender;
 import com.alkemy.disney.entities.Movie;
-import com.alkemy.disney.entities.Character;
 import com.alkemy.disney.excepciones.ServiceException;
 import com.alkemy.disney.services.GenderService;
 import com.alkemy.disney.services.MovieService;
@@ -97,10 +97,10 @@ public class MovieController {
         movie.setScore(score);
         movie.setGender((Gender) genderService.findById(idGender).get());
 
-        Character Character = this.characterService.findCharacterById(idCharacter);
+        Figure figure = this.characterService.findCharacterById(idCharacter);
 
-        List<Character> lista = movie.getCharacters();
-        lista.add(Character);
+        List<Figure> lista = movie.getCharacters();
+        lista.add(figure);
         movie.setCharacters(lista);
 
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
@@ -180,9 +180,9 @@ public class MovieController {
             }
         }
 
-        Character character = this.characterService.findCharacterById(idCharacter);
+        Figure character = this.characterService.findCharacterById(idCharacter);
 
-        List<Character> lista = movie.getCharacters();
+        List<Figure> lista = movie.getCharacters();
         lista.add(character);
         movie.setCharacters(lista);
         return this.movieService.saveMovie(movie);

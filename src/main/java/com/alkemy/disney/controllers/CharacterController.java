@@ -1,8 +1,8 @@
 package com.alkemy.disney.controllers;
 
 import com.alkemy.disney.dto.CharacterJsonResponse;
+import com.alkemy.disney.entities.Figure;
 import com.alkemy.disney.entities.Movie;
-import com.alkemy.disney.entities.Character;
 import com.alkemy.disney.excepciones.ServiceException;
 import com.alkemy.disney.services.MovieService;
 import com.alkemy.disney.services.CharacterService;
@@ -40,7 +40,7 @@ public class CharacterController extends Object {
     @GetMapping()
     public List<CharacterJsonResponse> getAllCharacters() {
         this.log.info("'/characters': STARTING OPERATION TO DISPLAY ALL CHARACTERS");
-        List<Character> charactersList;
+        List<Figure> charactersList;
         List<CharacterJsonResponse> characters = new ArrayList<>();
         try {
             charactersList = this.characterService.findAllCharacters();
@@ -55,8 +55,8 @@ public class CharacterController extends Object {
     }
 
     @GetMapping("/details")
-    public List<Character> displayCharacterDetails() {
-        List<Character> characterList = new ArrayList<>();
+    public List<Figure> displayCharacterDetails() {
+        List<Figure> characterList = new ArrayList<>();
         try {
             characterList = this.characterService.findAllCharacters();
         } catch (Exception e) {
@@ -66,8 +66,8 @@ public class CharacterController extends Object {
     }
 
     @GetMapping("/name")
-    public ArrayList<Character> findByName(@RequestParam("name") String name) throws ServiceException {
-        ArrayList<Character> characterArrayList = new ArrayList<>();
+    public ArrayList<Figure> findByName(@RequestParam("name") String name) throws ServiceException {
+        ArrayList<Figure> characterArrayList = new ArrayList<>();
         try {
             characterArrayList = this.characterService.findByName(name);
         } catch (Exception e) {
@@ -77,8 +77,8 @@ public class CharacterController extends Object {
     }
 
     @GetMapping("/age")
-    public ArrayList<Character> findByAge(@RequestParam("age") Integer age) throws ServiceException {
-        ArrayList<Character> characterArrayList = new ArrayList<>();
+    public ArrayList<Figure> findByAge(@RequestParam("age") Integer age) throws ServiceException {
+        ArrayList<Figure> characterArrayList = new ArrayList<>();
         try {
             characterArrayList = this.characterService.findByAge(age);
         } catch (Exception e) {
@@ -88,8 +88,8 @@ public class CharacterController extends Object {
     }
 
     @GetMapping("/movies")
-    public ArrayList<Character> findByMovie(@RequestParam("id") String id) throws ServiceException {
-        ArrayList<Character> characters = new ArrayList<>();
+    public ArrayList<Figure> findByMovie(@RequestParam("id") String id) throws ServiceException {
+        ArrayList<Figure> characters = new ArrayList<>();
         try {
             characters = this.characterService.findByMovie(id);
         } catch (Exception e) {
@@ -99,14 +99,14 @@ public class CharacterController extends Object {
     }
 
     @PostMapping("/create")
-    public Character buildCharacter(@RequestParam MultipartFile image,
+    public Figure buildCharacter(@RequestParam MultipartFile image,
                                     @RequestParam String name,
                                     @RequestParam Integer age,
                                     @RequestParam Double weight,
                                     @RequestParam String history,
                                     @RequestParam String movieId) throws ServiceException {
 
-        Character character = new Character();
+        Figure character = new Figure();
 
         try {
             this.characterService.validate(image, name, age, weight, history, movieId);
@@ -149,7 +149,7 @@ public class CharacterController extends Object {
     }
 
     @PutMapping(path = "/{id}")
-    public Character updateCharacter(@PathVariable("id") String id,
+    public Figure updateCharacter(@PathVariable("id") String id,
                                      @RequestParam MultipartFile image,
                                      @RequestParam String name,
                                      @RequestParam Integer age,
@@ -157,7 +157,7 @@ public class CharacterController extends Object {
                                      @RequestParam String history,
                                      @RequestParam String movieId) throws ServiceException {
 
-        Character character = new Character();
+        Figure character = new Figure();
         try {
             character = this.characterService.findCharacterById(id);
             character.setName(name);

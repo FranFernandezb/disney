@@ -1,6 +1,6 @@
 package com.alkemy.disney.services;
 
-import com.alkemy.disney.entities.Character;
+import com.alkemy.disney.entities.Figure;
 import com.alkemy.disney.excepciones.ServiceException;
 import com.alkemy.disney.repositories.CharacterRepository;
 
@@ -10,7 +10,6 @@ import java.util.List;
 import com.alkemy.disney.utils.Logger.Object;
 import com.alkemy.disney.utils.constants.Constants;
 import com.alkemy.disney.utils.messages.Messages;
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,8 +20,8 @@ public class CharacterService extends Object {
     @Autowired
     private CharacterRepository characterRepository;
 
-    public List<Character> findAllCharacters() throws ServiceException {
-        List<Character> characterList;
+    public List<Figure> findAllCharacters() throws ServiceException {
+        List<Figure> characterList;
         try {
             this.log.info(String.format(Messages.FINDING_ALL_ENTITIES, Constants.CHARACTER));
             characterList = this.characterRepository.findAll();
@@ -46,11 +45,11 @@ public class CharacterService extends Object {
         }
     }
 
-    public Character saveCharacter(Character Character) {
-        return this.characterRepository.save(Character);
+    public Figure saveCharacter(Figure figure) {
+        return this.characterRepository.save(figure);
     }
 
-    public Character findCharacterById(String id) throws ServiceException {
+    public Figure findCharacterById(String id) throws ServiceException {
 
         if (this.characterRepository.findById(id).isPresent()) {
             return this.characterRepository.findById(id).get();
@@ -62,7 +61,7 @@ public class CharacterService extends Object {
 
     }
 
-    public ArrayList<Character> findByName(String name) throws ServiceException {
+    public ArrayList<Figure> findByName(String name) throws ServiceException {
 
         if (this.characterRepository.findByName(name).isEmpty()) {
             throw new ServiceException(
@@ -72,7 +71,7 @@ public class CharacterService extends Object {
         return this.characterRepository.findByName(name);
     }
 
-    public ArrayList<Character> findByAge(Integer age) throws ServiceException {
+    public ArrayList<Figure> findByAge(Integer age) throws ServiceException {
 
         if (this.characterRepository.findByage(age).isEmpty()) {
             throw new ServiceException(String.format(Messages.THERE_IS_NO_ENTITY_WITH_THAT_ATTRIBUTE, Constants.CHARACTER, Constants.AGE, age.toString()));
@@ -80,7 +79,7 @@ public class CharacterService extends Object {
         return this.characterRepository.findByage(age);
     }
 
-    public ArrayList<Character> findByMovie(String id) throws ServiceException {
+    public ArrayList<Figure> findByMovie(String id) throws ServiceException {
 
         if (this.characterRepository.findByMovie(id).isEmpty()) {
             throw new ServiceException(String.format(Messages.THERE_IS_NO_ENTITY_WITH_THAT_ATTRIBUTE, Constants.CHARACTER, Constants.MOVIE, id));

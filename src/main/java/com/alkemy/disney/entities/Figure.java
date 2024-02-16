@@ -12,7 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Character implements Serializable {
+public class Figure implements Serializable {
 
     @Id
     @GeneratedValue(generator = "uuid")
