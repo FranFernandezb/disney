@@ -73,7 +73,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtDTO> login(@RequestBody LoginUsuario loginUsuario, BindingResult bindingResult) {
-        JwtDTO jwtDto = null;
+        JwtDTO jwtDto;
         try {
             if (bindingResult.hasErrors()) {
                 return new ResponseEntity("No se ha podido iniciar sesión, datos incorrectos.", HttpStatus.BAD_REQUEST);

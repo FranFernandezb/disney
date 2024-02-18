@@ -30,15 +30,6 @@ import java.io.IOException;
 @EnableWebSecurity
 public class MainSecurity extends WebSecurityConfigurerAdapter {
 
-    private static final String[] SWAGGER_PATHS = {
-            "/v2/api-docs",
-            "/configuration/ui",
-            "/swagger-resources/**",
-            "/configuration/security",
-            "/swagger-ui.html",
-            "/webjars/**"
-    };
-
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -65,11 +56,7 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/auth/register").permitAll()
                 .antMatchers("/auth/login").permitAll()
-               // .antMatchers("auth/login").permitAll()
                 .anyRequest().authenticated();
-                /*.antMatchers(HttpMethod.GET, "/**").authenticated()
-                .antMatchers(HttpMethod.POST, "/**").authenticated()
-                .antMatchers(HttpMethod.DELETE, "/**").authenticated();*/
 
         http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
